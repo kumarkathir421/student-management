@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/header :: header}">
+    <title>Create Student</title>
+</head>
+
+<body>
+
+	<!-- NAVBAR -->
+    <div th:replace="~{layout/navbar :: navbar}"></div>
+
+    <div class="container mt-4 mb-5">
+
+		<!-- PAGE HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-primary">Create Student</h3>
+            <a href="/students" class="btn btn-secondary shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+		<!-- CARD WRAPPER -->
+        <div class="card p-4 shadow-sm">
+
+            <form id="studentForm" th:action="@{/students}" th:object="${student}" method="post">
+
+                <div th:replace="~{fragments/form-fields :: formFields}"></div>
+
+                <div class="mt-4">
+                    <button class="btn btn-success px-4 shadow-sm">
+                        <i class="bi bi-check-circle me-1"></i> Save
+                    </button>
+
+                    <a href="/students" class="btn btn-secondary px-4 shadow-sm ms-2">Cancel</a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+	<!-- FOOTER -->
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>

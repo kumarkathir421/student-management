@@ -1,0 +1,27 @@
+html,
+body {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+.content-wrapper {
+	flex: 1;
+}
+
+.navbar {
+	margin-bottom: 20px;
+}
+
+.validation i {
+    font-size: 1rem;
+}
+.valid-field {
+    border-color: #28a745 !important;
+}
+.invalid-field {
+    border-color: #dc3545 !important;
+}

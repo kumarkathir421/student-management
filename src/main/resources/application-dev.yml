@@ -1,0 +1,28 @@
+spring:
+  application:
+   name: student-management
+
+  datasource:
+    url: jdbc:h2:mem:studentdb
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+#    show-sql: true
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      mode: always
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+server:
+ port: 8080  
+
