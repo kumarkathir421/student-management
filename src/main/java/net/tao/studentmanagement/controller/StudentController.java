@@ -31,7 +31,7 @@ public class StudentController {
 
 	private static final String SUCCESS_MESSAGE = "successMessage";
 	private static final String TITLE = "title";
-	private static final String PAGE_URL = "redirect:/students/list?page=";
+	private static final String REDIRECT_PAGED_URL = "redirect:/students/list?page=";
 	
 	@Value("${app.pagination.default-size}")
 	private int defaultSize;
@@ -140,7 +140,7 @@ public class StudentController {
 		int page = (int) Math.ceil((double) total / size) - 1;
 		ra.addFlashAttribute(SUCCESS_MESSAGE, "Student created successfully!");
 
-		return PAGE_URL + page;
+		return REDIRECT_PAGED_URL + page;
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class StudentController {
 		studentService.updateStudent(id, dto);
 		ra.addFlashAttribute(SUCCESS_MESSAGE, "Student updated successfully!");
 
-		return PAGE_URL + page;
+		return REDIRECT_PAGED_URL + page;
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class StudentController {
 		studentService.deleteStudent(id);
 		ra.addFlashAttribute(SUCCESS_MESSAGE, "Student deleted successfully!");
 
-		return PAGE_URL + page;
+		return REDIRECT_PAGED_URL + page;
 	}
 
 	/**
