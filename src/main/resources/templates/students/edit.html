@@ -3,7 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{layout/header :: header}">
-    <title>Edit Student</title>
+	<title>Edit Student</title>
 </head>
 
 <body>
@@ -16,7 +16,9 @@
 		<!-- PAGE HEADER -->
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h3 class="fw-bold text-primary">Edit Student</h3>
-			<a href="/students" class="btn btn-secondary shadow-sm">
+			<input type="hidden" name="page" th:value="${page}" />
+			<input type="hidden" name="size" th:value="${size}" />
+			<a th:href="@{/students/list(size=${size}, page=${page})}" class="btn btn-secondary shadow-sm">
 				<i class="bi bi-arrow-left me-1"></i> Back
 			</a>
 		</div>
@@ -24,7 +26,8 @@
 		<!-- CARD WRAPPER -->
 		<div class="card p-4 shadow-sm">
 
-			<form id="studentForm" th:action="@{/students/{id}(id=${id}, page=${page})}" th:object="${student}" method="post">
+			<form id="studentForm" th:action="@{/students/{id}(id=${id}, page=${page})}" th:object="${student}"
+				method="post">
 
 				<div th:replace="~{fragments/form-fields :: formFields}"></div>
 
@@ -33,8 +36,10 @@
 					<button class="btn btn-primary px-4 shadow-sm">
 						<i class="bi bi-save me-1"></i> Update
 					</button>
-
-					<a href="/students" class="btn btn-secondary px-4 shadow-sm ms-2">
+					<input type="hidden" name="page" th:value="${page}" />
+					<input type="hidden" name="size" th:value="${size}" />
+					<a th:href="@{/students/list(size=${size}, page=${page})}"
+						class="btn btn-secondary px-4 shadow-sm ms-2">
 						Cancel
 					</a>
 				</div>

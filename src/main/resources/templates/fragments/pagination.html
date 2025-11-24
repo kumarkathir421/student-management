@@ -5,7 +5,7 @@
 
 				<!-- PREVIOUS -->
 				<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-					<a class="page-link" th:href="@{/students(
+					<a class="page-link" th:href="@{/students/list(
                                 page=${currentPage - 1},
                                 keyword=${keyword},
                                 sortField=${sortField},
@@ -19,7 +19,7 @@
 				<li class="page-item" th:each="p : ${#numbers.sequence(0, totalPages - 1)}"
 					th:classappend="${p == currentPage} ? 'active'">
 
-					<a class="page-link" th:text="${p + 1}" th:href="@{/students(
+					<a class="page-link" th:text="${p + 1}" th:href="@{/students/list(
                                 page=${p},
                                 keyword=${keyword},
                                 sortField=${sortField},
@@ -31,7 +31,7 @@
 
 				<!-- NEXT -->
 				<li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
-					<a class="page-link" th:href="@{/students(
+					<a class="page-link" th:href="@{/students/list(
                                 page=${currentPage + 1},
                                 keyword=${keyword},
                                 sortField=${sortField},

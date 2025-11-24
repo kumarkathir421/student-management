@@ -2,7 +2,7 @@ package net.tao.studentmanagement.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,19 +30,13 @@ import net.tao.studentmanagement.service.StudentService;
 public class StudentController {
 
 	private static final String SUCCESS_MESSAGE = "successMessage";
-
+	private static final String TITLE = "title";
+	private static final String PAGE_URL = "redirect:/students/list?page=";
+	
+	@Value("${app.pagination.default-size}")
+	private int defaultSize;
+	
 	private final StudentService studentService;
-
-	/**
-	 * Redirects root path "/" to the student listing page.
-	 *
-	 * @return redirect:/students
-	 */
-	@GetMapping("/")
-	public String home() {
-		log.info("Redirecting to /students/list");
-		return "redirect:/students/list";
-	}
 
 	/**
 	 * Displays the student list with pagination and optional keyword search.
@@ -53,14 +47,16 @@ public class StudentController {
 	 * @param model   Spring Model to pass UI attributes
 	 * @return Thymeleaf view for listing students
 	 */
-	@GetMapping
-	public String listStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+	@GetMapping("/list")
+	public String listStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) Integer size,
 			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "id") String sortField,
 			@RequestParam(defaultValue = "asc") String sortDir, Model model) {
 		log.info("Listing students: page={}, size={}, keyword='{}', sortField='{}', sortDir='{}'", page, size, keyword,
 				sortField, sortDir);
 		if (page < 0)
 			page = 0;
+		if(size == null)
+			size = defaultSize;
 
 		boolean hasSearch = keyword != null && !keyword.isBlank();
 
@@ -98,7 +94,7 @@ public class StudentController {
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSort", sortDir.equals("asc") ? "desc" : "asc");
-		model.addAttribute("title", "List Student");
+		model.addAttribute(TITLE, "List Student");
 
 		return "students/list";
 	}
@@ -110,9 +106,11 @@ public class StudentController {
 	 * @return create-student view
 	 */
 	@GetMapping("/new")
-	public String showCreateForm(Model model) {
+	public String showCreateForm(@RequestParam int size, @RequestParam int page, Model model) {
 		log.info("Displaying create student form");
-		model.addAttribute("title", "Create Student");
+		model.addAttribute(TITLE, "Create Student");
+		model.addAttribute("size", size);
+		model.addAttribute("page", page);
 		model.addAttribute("student", new StudentRequestDto());
 		return "students/create";
 	}
@@ -126,7 +124,7 @@ public class StudentController {
 	 * @return redirect to student list page if success, otherwise reload form
 	 */
 	@PostMapping
-	public String createStudent(@Valid @ModelAttribute("student") StudentRequestDto dto, BindingResult result,
+	public String createStudent(@Valid @ModelAttribute("student") StudentRequestDto dto, BindingResult result, @RequestParam int size,
 			RedirectAttributes ra) {
 
 		log.info("Creating new student: {}", dto.getName());
@@ -137,9 +135,12 @@ public class StudentController {
 		}
 
 		studentService.createStudent(dto);
+		var total = studentService.getTotalCount();
+
+		int page = (int) Math.ceil((double) total / size) - 1;
 		ra.addFlashAttribute(SUCCESS_MESSAGE, "Student created successfully!");
 
-		return "redirect:/students";
+		return PAGE_URL + page;
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class StudentController {
 	 * @return edit-student view
 	 */
 	@GetMapping("/{id}/edit")
-	public String showEditForm(@PathVariable Integer id, @RequestParam(defaultValue = "0") int page, Model model) {
+	public String showEditForm(@PathVariable Integer id, @RequestParam(defaultValue = "0") int page, @RequestParam int size, Model model) {
 		log.info("Displaying edit form for student id={}", id);
 		StudentResponseDto existing = studentService.getStudentById(id);
 
@@ -159,7 +160,8 @@ public class StudentController {
 		model.addAttribute("student", dto);
 		model.addAttribute("id", id);
 		model.addAttribute("page", page);
-		model.addAttribute("title", "Edit Student");
+		model.addAttribute("size", size);
+		model.addAttribute(TITLE, "Edit Student");
 
 		return "students/edit";
 	}
@@ -183,14 +185,14 @@ public class StudentController {
 			log.warn("Update validation failed for student id={}", id);
 			model.addAttribute("id", id);
 			model.addAttribute("page", page);
-			model.addAttribute("title", "Edit Student");
+			model.addAttribute(TITLE, "Edit Student");
 			return "students/edit";
 		}
 
 		studentService.updateStudent(id, dto);
 		ra.addFlashAttribute(SUCCESS_MESSAGE, "Student updated successfully!");
 
-		return "redirect:/students?page=" + page;
+		return PAGE_URL + page;
 	}
 
 	/**
@@ -207,7 +209,7 @@ public class StudentController {
 		studentService.deleteStudent(id);
 		ra.addFlashAttribute(SUCCESS_MESSAGE, "Student deleted successfully!");
 
-		return "redirect:/students?page=" + page;
+		return PAGE_URL + page;
 	}
 
 	/**

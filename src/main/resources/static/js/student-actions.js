@@ -13,14 +13,14 @@ $(document).ready(function () {
         $.ajax({
             url: "/students/" + id + "/details",
             type: "GET",
-            success: function (s) {
-                $("#vId").text(s.id);
-                $("#vName").text(s.name);
-                $("#vGender").text(s.gender);
-                $("#vDob").text(s.dob);
-                $("#vEmail").text(s.email);
-                $("#vMobile").text(s.mobile);
-                $("#vPhone").text(s.phone);
+            success: function (student) {
+                $("#vId").text(student.id);
+                $("#vName").text(student.name);
+                $("#vGender").text(student.gender);
+                $("#vDob").text(student.dob);
+                $("#vEmail").text(student.email);
+                $("#vMobile").text(student.mobile);
+                $("#vPhone").text(student.phone);
 
                 new bootstrap.Modal(document.getElementById('viewModal')).show();
             }

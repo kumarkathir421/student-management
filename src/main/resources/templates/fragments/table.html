@@ -7,7 +7,7 @@
 					<tr>
 						<th>
 							<a class="text-white text-decoration-none"
-								th:href="@{/students(page=${currentPage}, keyword=${keyword}, sortField='id', sortDir=${reverseSort})}">
+								th:href="@{/students/list(page=${currentPage}, keyword=${keyword}, sortField='id', sortDir=${reverseSort})}">
 								ID
 							</a>
 							<span th:if="${sortField == 'id' and sortDir == 'asc'}">↑</span>
@@ -16,7 +16,7 @@
 
 						<th>
 							<a class="text-white text-decoration-none"
-								th:href="@{/students(page=${currentPage}, keyword=${keyword}, sortField='name', sortDir=${reverseSort})}">
+								th:href="@{/students/list(page=${currentPage}, keyword=${keyword}, sortField='name', sortDir=${reverseSort})}">
 								Name
 							</a>
 							<span th:if="${sortField == 'name' and sortDir == 'asc'}">↑</span>
