@@ -13,7 +13,7 @@ import lombok.Data;
 public class StudentRequestDto {
 
     @NotBlank(message = "Name is required")
-    @Size(max = 45)
+    @Size(min = 1, max = 45, message = "Name length must be between 1 and 45 characters")
     private String name;
 
     @Size(max = 45)
