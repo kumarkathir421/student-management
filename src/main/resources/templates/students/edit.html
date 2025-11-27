@@ -28,9 +28,11 @@
 
 			<form id="studentForm" th:action="@{/students/{id}(id=${id}, page=${page})}" th:object="${student}"
 				method="post">
+				<!-- Convert POST -> PUT -->
+				    <input type="hidden" name="_method" value="put" />
 
 				<div th:replace="~{fragments/form-fields :: formFields}"></div>
-
+				
 				<!-- BUTTONS -->
 				<div class="mt-4">
 					<button class="btn btn-primary px-4 shadow-sm">

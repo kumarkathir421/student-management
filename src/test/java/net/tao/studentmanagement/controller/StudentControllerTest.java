@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -202,7 +203,7 @@ class StudentControllerTest {
 
     @Test
     void testUpdateStudent_validationError() throws Exception {
-        mockMvc.perform(post("/students/1")
+        mockMvc.perform(put("/students/1")
                 .param("name", ""))
                 .andExpect(status().isOk())
                 .andExpect(view().name("students/edit"))
@@ -259,7 +260,7 @@ class StudentControllerTest {
 
     @Test
     void testUpdateStudent_addsFlashMessage() throws Exception {
-        mockMvc.perform(post("/students/1")
+        mockMvc.perform(put("/students/1")
         		.param("size", "10")
         		.param("page", "0")
                 .param("name", "Test")

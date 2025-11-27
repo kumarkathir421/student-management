@@ -64,7 +64,7 @@ class GlobalExceptionHandlerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/students"))
                 .andExpect(flash().attributeExists("errorMessage"))
-                .andExpect(flash().attribute("errorMessage", "boom runtime"));
+                .andExpect(flash().attribute("errorMessage", "Runtime Exception"));
     }
 
     @Test
@@ -74,7 +74,7 @@ class GlobalExceptionHandlerTest {
                 .andExpect(view().name("error/general-error"))
                 .andExpect(model().attributeExists("message"))
                 .andExpect(model().attribute("message",
-                        "Something went wrong: generic boom"));
+                        "Something went wrong: generic error"));
     }
 
     @Controller
@@ -99,12 +99,12 @@ class GlobalExceptionHandlerTest {
 
         @GetMapping("/test/runtime")
         public void throwRuntime() {
-            throw new RuntimeException("boom runtime");
+            throw new RuntimeException("Runtime Exception");
         }
 
         @GetMapping("/test/generic")
         public void throwGeneric() throws Exception {
-            throw new Exception("generic boom");
+            throw new Exception("generic exception");
         }
 
         @SuppressWarnings("unused")

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -128,13 +129,15 @@ public class StudentController {
 	 * @return redirect to student list page if success, otherwise reload form
 	 */
 	@PostMapping
-	public String createStudent(@Valid @ModelAttribute("student") StudentRequestDto dto, BindingResult result, @RequestParam int size,
-			RedirectAttributes ra) {
+	public String createStudent(@Valid @ModelAttribute("student") StudentRequestDto dto, BindingResult result,
+			@RequestParam int size, Model model, RedirectAttributes ra) {
 
 		log.info("Creating new student: {}", dto.getName());
 
 		if (result.hasErrors()) {
 			log.warn("Create student validation failed");
+			model.addAttribute("page", 0);
+			model.addAttribute("size", size);
 			return "students/create";
 		}
 
@@ -181,7 +184,7 @@ public class StudentController {
 	 * @return redirect to list page on success or stay on edit page if validation
 	 *         fails
 	 */
-	@PostMapping("/{id}")
+	@PutMapping("/{id}")
 	public String updateStudent(@PathVariable Integer id, @Valid @ModelAttribute("student") StudentRequestDto dto,
 			BindingResult result, @RequestParam(defaultValue = "0") int page, Model model, RedirectAttributes ra) {
 		log.info("Updating student id={}", id);
